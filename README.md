@@ -1,2 +1,2 @@
 # Computational-Neuroscience-UW
-Python scripts that supplement the Coursera Computational Neuroscience course by the University of Washington
+The University of Washington offers an [online course](https://www.coursera.org/learn/computational-neuroscience/home/welcome) on computational neuroscience taught by Adrienne Fairhall and Rajesh Rao. In this repository I collect scripts that I created to better understand the course material. For convenience, this scripts have also been implemented in IPython notebooks which can be viewed directly on Github. 
