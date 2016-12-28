@@ -8,12 +8,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Parameters for the passive membrane model
-R = 3
-C = 0.01
-tau = R*C
-V_rest = 0.0
+R      = 40   # [Mohm]
+C      = 1.0  # [nF]
+tau    = R*C  # Membrane time constant [ms]
+V_rest = 0.0  # Equilibrium potential  [mV]
+dt     = 1.0  # Simulation time step [ms]
 
-t = np.arange(0,0.5,0.001)
+max_t  = 500
+t = np.arange(0,max_t,dt)
 
 # The exact solution has to be calculated during  three different intervals
 I_ext = 0.0
@@ -35,18 +37,14 @@ I = np.concatenate((np.zeros(len(t)),0.5*np.ones(len(t)),np.zeros(len(t))))
 V_euler = np.zeros(len(I))
 for i in range(1,len(I)):
     dV = (-(V_euler[i-1] - V_rest) + R*I[i])/tau
-    V_euler[i] = V_euler[i-1] + dV*0.001
+    V_euler[i] = V_euler[i-1] + dV*dt
 
-plt.subplot(1,2,1)
-plt.plot(np.arange(0,1.5,0.001),V_exact,'k')
-plt.plot(np.arange(0,1.5,0.001),I,'r')
-plt.xlabel('Time (s)')
-plt.ylabel('Voltage')
+plt.plot(V_exact,'k')
+plt.plot(V_euler,'--k')
+plt.plot(I,'r')
+plt.xlabel('Time (ms)')
+plt.ylabel('Membrane potential [mV]')
 plt.title('Exact solution')
-plt.subplot(1,2,2)
-plt.plot(np.arange(0,1.5,0.001),V_euler,'--k')
-plt.plot(np.arange(0,1.5,0.001),I,'r')
-plt.title('Euler approximation')
 #%% Alpha and beta functions
 # As given in http://icwww.epfl.ch/~gerstner/SPNM/node14.html
 # These use a resting potential that corresponds to 0.0 mV
