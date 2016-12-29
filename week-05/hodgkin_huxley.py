@@ -95,7 +95,7 @@ g_K  = 36.0
 g_L  = 0.3
 
 dt = 0.01
-T = 80
+T = 40
 t = np.arange(0,T,dt)
 
 V = np.zeros(len(t))
@@ -110,9 +110,9 @@ m[0] = 0.05
 n[0] = 0.31
 
 for i in range(1,len(t)):
-    if i == 3000:
-        I_E = 10.0
-    if i == 3500:
+    if i == 1000:
+        I_E = 7.2
+    if i == 1300:
         I_E = 0.0
         
     # Calculate the alpha and beta functions
