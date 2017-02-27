@@ -54,7 +54,7 @@ plt.title('Eigenface #2')
 
 # Project face on eigenvectors to get component loading and show 
 # reconstructed images
-n_eigen_faces = [10, 20, 30]
+n_eigen_faces = [5, 10, 40]
 face_reconstruction = np.zeros((3,3000))
 
 for f in range(3):
@@ -62,7 +62,19 @@ for f in range(3):
         loading = np.dot(face_data[:,0], v[:,l_indices[-1-i]])
         face_reconstruction[f,:] += np.real(loading*v[:,l_indices[-1-i]])
     
-plt.subplot(1,2,1)    
+plt.subplot(2,3,2)    
 plt.imshow(np.reshape(face_data[:,0], (60,50)),cmap='gray')
-plt.subplot(1,2,2)
-plt.imshow(np.reshape(face_reconstruction, (60,50)),cmap='gray')
+plt.axis('off')
+plt.title('Original image')
+plt.subplot(2,3,4)
+plt.imshow(np.reshape(face_reconstruction[0,:], (60,50)),cmap='gray')
+plt.axis('off')
+plt.title('EF = 5')
+plt.subplot(2,3,5)
+plt.imshow(np.reshape(face_reconstruction[1,:], (60,50)),cmap='gray')
+plt.axis('off')
+plt.title('EF = 10')
+plt.subplot(2,3,6)
+plt.imshow(np.reshape(face_reconstruction[2,:], (60,50)),cmap='gray')
+plt.axis('off')
+plt.title('EF = 40')
