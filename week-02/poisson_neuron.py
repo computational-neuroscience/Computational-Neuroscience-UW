@@ -10,14 +10,14 @@ from scipy.stats import poisson
 
 dt = 0.001     # Time intervals that we will be looking at
 T = 2          # Total simulation time
-r = 10         # Firing rate in spikes per second
+r = 5          # Firing rate in spikes per second
 p = r*dt       # Probability of a spike in a very small time interval
 
 n_trials = 500 # Total number of trials that we will simulate
 
 
-# Here we run multiple simulations of a Poisson spiking neuron
-# For each simulation trial we count the total number of spikes in that trial
+# Here we run multiple simulations trials for a Poisson spiking neuron
+# For each simulation trial we count the total number of spikes
 # and the time between each spike to generate an inter-spike-interval
 isi = np.zeros(0)
 spike_count = np.zeros(n_trials)
@@ -27,8 +27,6 @@ for t in range(n_trials):
     spikes[spikes < 1] = 0
     spike_count[t] = np.sum(spikes)
     isi = np.append(isi,np.diff(np.where(spikes==1)[0]))
-    
-
 
 # Plot the spike count histogram across trials
 print(np.mean(spike_count))
