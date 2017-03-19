@@ -1,4 +1,4 @@
-The file eigenfaces.py is a Python implementation of eigenfaces. To run this script you first have to download a database of faces to which you can apply the algorithm.
+The file eigenfaces.py contains an implementation of the algorithm used to calculate eigenfacse. To run this script you first have to download a database of faces to which you can apply the algorithm.
 
 In addition, the following notebooks are provided:
 
