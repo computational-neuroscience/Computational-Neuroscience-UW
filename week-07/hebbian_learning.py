@@ -24,7 +24,7 @@ n_dim     = 2
 n_samples = 200
 
 
-# Create samples from uniform distribution and rotating
+# Create samples from uniform distribution and rotates the data cloud
 theta= np.pi/4
 rot_matrix = np.array([ [np.cos(theta),-np.sin(theta)],[np.sin(theta),np.cos(theta)]])
 U = np.array([np.random.normal(u1_center,u1_spread,n_samples),np.random.normal(u2_center,u2_spread,n_samples)])
@@ -37,25 +37,30 @@ E = np.cov(U)
 #%% Illustration 1: weights grow without bounds
 
 # Hebbian learning rule parameters
-w_init = np.random.rand(2)-0.5
-w = w_init.copy()
-epsilon = 0.0005
+w_init = np.random.rand(2)-0.5 # Initial parameters
+w = w_init.copy()              # Copy of initial parameters
+epsilon = 0.0005               # Learning rate
 
-# Run the update rule
-weights   = np.zeros(n_samples)
-alignment = np.zeros(n_samples)
+# Variables to store the weight vector norm and alignment with the first
+# principal component of the input data
+weights_norm   = np.zeros(n_samples)
+alignment      = np.zeros(n_samples)
 
+# Run the Hebbiean learning rule
 for i in range(n_samples):
+    # Apply
     u = U[:,i]
     v = w.dot(u)
     dw = epsilon*v*u
     w = w + dw
     
-    weights[i] = np.linalg.norm(w)
+    weights_norm[i] = np.linalg.norm(w)
     alignment[i]= np.dot(eigen_vec[:,1],w)/(np.linalg.norm(eigen_vec[:,1])*np.linalg.norm(w))
 
+
+# Plot weight vector norm and alignment with principal component
 plt.subplot(1,2,1)
-plt.plot(weights)
+plt.plot(weights_norm)
 plt.xlabel('Sample presented')
 plt.ylabel('|w|')
 plt.title('Evolution of weight vector')
@@ -69,18 +74,23 @@ plt.title('Alignment with covariane matrix eigenvector')
 plt.xlabel('Sample presented')
 plt.ylabel('cos(theta)')
 #%% Illustration 2: weights align with the principal eigenvector of the input covariance matrix
-w_normed = w/np.linalg.norm(w)
-w_E = E.dot(w)/np.linalg.norm(E.dot(w))
+w_normed = w/np.linalg.norm(w)          # Normed weight vector from Hebbian learning
+w_E = E.dot(w)/np.linalg.norm(E.dot(w)) # Weight vector resulting from multiplying with covariance matrix
+w_C = eigen_vec[:,-1]                   # Weight vector based on first eigenvector of covariance matrix
 
-r = 40
+r = 40 # Constant for setting arrow lengths
+
+arrow_1 = plt.arrow(0,0,r*w_normed[0],r*w_normed[1],fc='k',ec='k',head_width=2)
+arrow_2 = plt.arrow(0,0,r*w_E[0],r*w_E[1],fc='g',ec='g',head_width=2)
+arrow_3 = plt.arrow(0,0,r*w_C[0],r*w_C[1],fc='r',ec='r',head_width=2)
+
 plt.plot(U[0,:],U[1,:],'x')
 plt.xlim(-r,r)
 plt.ylim(-r,r)
 plt.axhline(0,color='k')
 plt.axvline(0,color='k')
 
-plt.arrow(0,0,r*w_normed[0],r*w_normed[1],fc='k',ec='k',head_width=2)
-plt.arrow(0,0,r*w_E[0],r*w_E[1],fc='g',ec='g',head_width=2)
 plt.xlabel(r'$u_1$')
 plt.ylabel(r'$u_2$')
-plt.title('Data and normed weight vector')
+plt.title('Data and weight vectors')
+plt.legend([arrow_1, arrow_2, arrow_3],['Hebbian weights','Covariance weights','Eigenvector'])
